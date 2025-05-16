@@ -1,0 +1,31 @@
+name: Publish Docker Image to Gitea Registry
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REGISTRY: git.home.dpi0.cloud
+  IMAGE: ${{ gitea.REPOSITORY }}
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Gitea Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ gitea.ACTOR }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+
+      - name: Build docker image
+        run: |
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE }}:latest
