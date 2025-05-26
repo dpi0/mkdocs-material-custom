@@ -7,3 +7,4 @@ markdown-captions==2.1.2
 mkdocs-enumerate-headings-plugin==0.6.2
 mkdocs-section-index==0.3.10
 mkdocs-git-committers-plugin-2==2.5.0
+mdx_truly_sane_lists==1.3
